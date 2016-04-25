@@ -13,6 +13,8 @@ namespace EvolveTODO.Services
 
         Task<ToDoItem> AddToDo(string text, bool complete);
 
+        Task<ToDoItem> UpdateItem(ToDoItem item);
+
         Task<bool> DeleteItem(ToDoItem item);
 
         Task SyncToDos();

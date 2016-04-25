@@ -47,8 +47,17 @@ namespace EvolveTODO.ViewModels
             {
                 Acr.UserDialogs.UserDialogs.Instance.ShowLoading("Saving new item");
 
-                await azureService.AddToDo(Text, Complete);
-                Acr.UserDialogs.UserDialogs.Instance.ShowSuccess("Saved new item", 1500);
+                if (item == null)
+                {
+                    await azureService.AddToDo(Text, Complete);
+                    Acr.UserDialogs.UserDialogs.Instance.ShowSuccess("Saved new item", 1500);
+                }
+                else
+                {
+                    await azureService.UpdateItem(item);
+                    Acr.UserDialogs.UserDialogs.Instance.ShowSuccess("Updated item", 1500);
+                }
+                
                 MessagingCenter.Send<ToDoDetailViewModel>(this, "ItemsChanged");
             }
             catch (Exception ex)

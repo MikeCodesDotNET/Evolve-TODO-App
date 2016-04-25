@@ -30,6 +30,14 @@ namespace EvolveTODO.Services
             return Task.FromResult(item);
         }
 
+        public Task<ToDoItem> UpdateItem(ToDoItem item)
+        {
+            var todo = items.FirstOrDefault(x => x.Id == item.Id);
+            items.Remove(todo);
+            items.Add(item);
+            return Task.FromResult(item);
+        }
+
         public Task<bool> DeleteItem(ToDoItem item)
         {
             items.Remove(item);

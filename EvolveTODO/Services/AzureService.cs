@@ -31,7 +31,7 @@ namespace EvolveTODO.Services
                 }
             };
 
-            var store = new MobileServiceSQLiteStore("todoitems.db");
+            var store = new MobileServiceSQLiteStore("todo.db");
 
             store.DefineTable<ToDoItem>();
 
@@ -65,6 +65,18 @@ namespace EvolveTODO.Services
             await SyncToDos();
             return item;
         }
+
+        public async Task<ToDoItem> UpdateItem(ToDoItem item)
+        {
+            await Initialize();
+            await todoTable.UpdateAsync(item);
+
+            //Synchronize coffee
+            await SyncToDos();
+            return item;
+        }
+
+
 
         public async Task<bool> DeleteItem(ToDoItem item)
         {
