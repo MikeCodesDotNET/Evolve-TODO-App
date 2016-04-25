@@ -45,10 +45,10 @@
     <Compile Include="Pages\ToDoDetail.xaml.cs">
       <DependentUpon>ToDoDetail.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\ToDoDetail.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ToDoDetailViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\" />
