@@ -61,7 +61,7 @@ namespace EvolveTODO.Services
 
             await todoTable.InsertAsync(item);
 
-            //Synchronize coffee
+            //Synchronize todos
             await SyncToDos();
             return item;
         }
@@ -71,7 +71,7 @@ namespace EvolveTODO.Services
             await Initialize();
             await todoTable.UpdateAsync(item);
 
-            //Synchronize coffee
+            //Synchronize todos
             await SyncToDos();
             return item;
         }
@@ -84,6 +84,7 @@ namespace EvolveTODO.Services
             try
             {
                 await todoTable.DeleteAsync(item);
+                await SyncToDos();
                 return true;
             }
             catch
