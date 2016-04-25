@@ -86,46 +86,6 @@ namespace EvolveTODO.ViewModels
             }
         }
 
-        Command deleteCommand;
-        public Command DeleteCommand
-        {
-            get { return deleteCommand ?? (deleteCommand = new Command(async () => await ExecuteDeleteCommand())); }
-        }
-
-        async Task ExecuteDeleteCommand()
-        {
-            if (IsBusy)
-                return;
-
-            IsBusy = true;
-
-            try
-            {
-                var sucessfullDeletion = await azureService.DeleteItem(SelectedToDoItem);
-                if (sucessfullDeletion)
-                {
-                    var todos = await azureService.GetToDos();
-                    ToDoItems.Clear();
-                    foreach (var todo in todos)
-                    {
-                        ToDoItems.Add(todo);
-                    }
-                }
-                else
-                {
-                    throw new Exception("Failed to delete item");
-                }
-            }
-            catch (Exception ex)
-            {
-                Acr.UserDialogs.UserDialogs.Instance.ShowError(ex.Message);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
         Command addNewItemCommand;
         public Command AddNewItemCommand
         {
