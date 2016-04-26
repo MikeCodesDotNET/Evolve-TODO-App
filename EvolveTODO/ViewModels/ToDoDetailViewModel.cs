@@ -41,9 +41,12 @@ namespace EvolveTODO.ViewModels
         {
             if (IsBusy)
                 return;
-
-            item.Text = Text;
-            item.Complete = Complete;
+            
+            if (item != null)
+            {
+                item.Text = Text;
+                item.Complete = Complete;
+            }
 
             IsBusy = true;
 
