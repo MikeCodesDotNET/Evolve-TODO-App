@@ -5,10 +5,10 @@ using System.Diagnostics;
 
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
-using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 
 using EvolveTODO.Models;
 using Plugin.Connectivity;
+using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 
 namespace EvolveTODO.Services
 {
@@ -25,9 +25,7 @@ namespace EvolveTODO.Services
 
             //TODO 1: Create our client
 
-
             //TODO 2: Create our database store & define a table.
-           
 
             isInitialized = true;
         }
@@ -36,9 +34,11 @@ namespace EvolveTODO.Services
         {
             //TODO 3: Lets double check we're connected to the internets. No point in throwing errors if not.
 
+
             try
             {
                 //TODO 4: Push and Pull our data
+
 
             }
             catch (Exception ex)
@@ -98,7 +98,6 @@ namespace EvolveTODO.Services
                 return false;
             }
         }
-
 
     }
 }
