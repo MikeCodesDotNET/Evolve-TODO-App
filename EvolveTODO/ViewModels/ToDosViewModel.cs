@@ -35,7 +35,7 @@ namespace EvolveTODO.ViewModels
             }
         }
 
-        private ToDoItem selectedToDoItem;
+        ToDoItem selectedToDoItem;
 
         public ToDoItem SelectedToDoItem
         {

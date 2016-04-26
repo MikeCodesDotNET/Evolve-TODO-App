@@ -30,6 +30,7 @@ namespace EvolveTODO.ViewModels
         public string Text { get; set;}
         public bool Complete { get; set;}
 
+
         Command saveItemCommand;
         public Command SaveItemCommand
         {
@@ -40,6 +41,9 @@ namespace EvolveTODO.ViewModels
         {
             if (IsBusy)
                 return;
+
+            item.Text = Text;
+            item.Complete = Complete;
 
             IsBusy = true;
 

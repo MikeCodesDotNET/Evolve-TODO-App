@@ -1,6 +1,5 @@
 ﻿using EvolveTODO.Helpers;
 using EvolveTODO.Services;
-using EvolveTODO.Pages;
 using Xamarin.Forms;
 
 namespace EvolveTODO
@@ -11,7 +10,7 @@ namespace EvolveTODO
         {
             InitializeComponent();
 
-            bool useMock = false;
+            bool useMock = true;
 
             if (useMock)
                 ServiceLocator.Instance.Add<IService, MockService>();

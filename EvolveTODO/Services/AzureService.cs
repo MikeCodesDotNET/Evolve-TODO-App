@@ -8,6 +8,7 @@ using Microsoft.WindowsAzure.MobileServices.Sync;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 
 using EvolveTODO.Models;
+using Plugin.Connectivity;
 
 namespace EvolveTODO.Services
 {
@@ -22,6 +23,7 @@ namespace EvolveTODO.Services
             if (isInitialized)
                 return;
 
+            //TODO Create our client (1)
             //Create our client
             MobileService = new MobileServiceClient(Helpers.Keys.AzureServiceUrl, null)
             {
@@ -31,8 +33,8 @@ namespace EvolveTODO.Services
                 }
             };
 
+            //TODO Create our database store & define a table. (2)
             var store = new MobileServiceSQLiteStore("todo.db");
-
             store.DefineTable<ToDoItem>();
 
             await MobileService.SyncContext.InitializeAsync(store, new MobileServiceSyncHandler());
@@ -41,6 +43,25 @@ namespace EvolveTODO.Services
             todoTable = MobileService.GetSyncTable<ToDoItem>();
 
             isInitialized = true;
+        }
+
+        public async Task SyncToDos()
+        {
+            //TODO Lets double check we're connected to the internets. No point in throwing errors if not. (3)
+            var connected = await CrossConnectivity.Current.IsReachable(Helpers.Keys.AzureServiceUrl);
+            if (connected == false)
+                return;
+
+            try
+            {
+                //TODO Push and Pull our data (4)
+                await MobileService.SyncContext.PushAsync();
+                await todoTable.PullAsync("allTodoItems", todoTable.CreateQuery());
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Unable to sync items, that is alright as we have offline capabilities: " + ex);
+            }
         }
 
         public async Task<IEnumerable<ToDoItem>> GetToDos()
@@ -59,6 +80,7 @@ namespace EvolveTODO.Services
                 Complete = complete
             };
 
+            //TODO Insert item into todoTable (5)
             await todoTable.InsertAsync(item);
 
             //Synchronize todos
@@ -69,6 +91,8 @@ namespace EvolveTODO.Services
         public async Task<ToDoItem> UpdateItem(ToDoItem item)
         {
             await Initialize();
+
+            //TODO Update item (6)
             await todoTable.UpdateAsync(item);
 
             //Synchronize todos
@@ -76,13 +100,12 @@ namespace EvolveTODO.Services
             return item;
         }
 
-
-
         public async Task<bool> DeleteItem(ToDoItem item)
         {
             await Initialize();
             try
             {
+                //TODO Delete item and Sync (7)
                 await todoTable.DeleteAsync(item);
                 await SyncToDos();
                 return true;
@@ -93,17 +116,6 @@ namespace EvolveTODO.Services
             }
         }
 
-        public async Task SyncToDos()
-        {
-            try
-            {
-                await MobileService.SyncContext.PushAsync();
-                await todoTable.PullAsync("allTodoItems", todoTable.CreateQuery());
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Unable to sync items, that is alright as we have offline capabilities: " + ex);
-            }
-        }
+
     }
 }
