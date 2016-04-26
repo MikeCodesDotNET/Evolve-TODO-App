@@ -64,8 +64,8 @@ namespace EvolveTODO.Services
 
             var todo1 = new ToDoItem
             {
-                Text = "Pack bags",
-                Complete = false
+                Text = "Get my hair cut",
+                Complete = true
             };
             items.Add(todo1);
 
@@ -76,8 +76,22 @@ namespace EvolveTODO.Services
             };
             items.Add(todo2);
 
-            return items;
+            var todo3 = new ToDoItem
+            {
+                Text = "Build Azure Function",
+                Complete = false
+            };
+            items.Add(todo3);
 
+
+            var todo4 = new ToDoItem
+            {
+                Text = "Buy HoloLens",
+                Complete = false
+            };
+            items.Add(todo4);
+
+            return items;
         }
     }
 }
