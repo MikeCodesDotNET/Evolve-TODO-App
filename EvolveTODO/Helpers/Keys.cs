@@ -3,7 +3,8 @@ namespace EvolveTODO.Helpers
 {
     public static class Keys
     {
-        public static readonly string AzureServiceUrl = "http://xamarin-evolve-demo.azurewebsites.net";
+        //TODO 0: Insert your own backend url here! 
+        public static readonly string AzureServiceUrl = "INSERT_YOUR_OWN_HERE";
     }
 }
 
