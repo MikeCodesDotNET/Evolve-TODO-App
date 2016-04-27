@@ -24,22 +24,40 @@ namespace EvolveTODO.Services
                 return;
 
             //TODO 1: Create our client
+            //Create our client
+            MobileService = new MobileServiceClient(Helpers.Keys.AzureServiceUrl, null)
+            {
+                SerializerSettings = new MobileServiceJsonSerializerSettings()
+                {
+                    CamelCasePropertyNames = true
+                }
+            };
 
             //TODO 2: Create our database store & define a table.
+            var store = new MobileServiceSQLiteStore("todo.db");
+            store.DefineTable<ToDoItem>();
+
+            //MobileServiceSyncHandler - Handles table operation errors and push completion results.
+            await MobileService.SyncContext.InitializeAsync(store, new MobileServiceSyncHandler());
+
+            //Get our sync table that will call out to azure
+            todoTable = MobileService.GetSyncTable<ToDoItem>();
 
             isInitialized = true;
         }
 
         public async Task SyncToDos()
         {
-            //TODO 3: Lets double check we're connected to the internets. No point in throwing errors if not.
-
+            //TODO 3: Add connectivity check. 
+            var connected = await Plugin.Connectivity.CrossConnectivity.Current.IsReachable(Helpers.Keys.AzureServiceUrl);
+            if (connected == false)
+                return; 
 
             try
             {
                 //TODO 4: Push and Pull our data
-
-
+                await MobileService.SyncContext.PushAsync();
+                await todoTable.PullAsync("allTodoItems", todoTable.CreateQuery());
             }
             catch (Exception ex)
             {
@@ -64,8 +82,7 @@ namespace EvolveTODO.Services
             };
 
             //TODO 5: Insert item into todoTable
-
-
+            await todoTable.InsertAsync(item);
             //Synchronize todos
             await SyncToDos();
             return item;
@@ -76,7 +93,7 @@ namespace EvolveTODO.Services
             await Initialize();
 
             //TODO 6: Update item
-
+            await todoTable.UpdateAsync(item);
 
             //Synchronize todos
             await SyncToDos();
@@ -89,7 +106,8 @@ namespace EvolveTODO.Services
             try
             {
                 //TODO 7: Delete item and Sync
-
+                await todoTable.DeleteAsync(item);
+                await SyncToDos();
 
                 return true;
             }
