@@ -65,7 +65,7 @@ namespace EvolveTODO.Services
             var todo1 = new ToDoItem
             {
                 Text = "Get my hair cut",
-                Complete = true
+                Complete = false
             };
             items.Add(todo1);
 
@@ -86,7 +86,7 @@ namespace EvolveTODO.Services
 
             var todo4 = new ToDoItem
             {
-                Text = "Buy HoloLens",
+                Text = "Buy Hololens",
                 Complete = false
             };
             items.Add(todo4);
