@@ -17,11 +17,7 @@ namespace EvolveTODO.ViewModels
             Title = "ToDo";
             azureService = ServiceLocator.Instance.Resolve<IService>();
 
-            ExecuteRefreshCommand();
-            MessagingCenter.Subscribe<ToDoDetailViewModel>(this, "ItemsChanged", (sender) =>
-            {
-                ExecuteRefreshCommand();
-            });
+            Refresh();
         }
 
         ObservableCollection<ToDoItem> toDoItems = new ObservableCollection<ToDoItem>();
@@ -111,6 +107,15 @@ namespace EvolveTODO.ViewModels
             {
                 IsBusy = false;
             }
+        }
+
+        void Refresh()
+        {
+            ExecuteRefreshCommand();
+            MessagingCenter.Subscribe<ToDoDetailViewModel>(this, "ItemsChanged", (sender) =>
+            {
+                ExecuteRefreshCommand();
+            });
         }
     }
 }
